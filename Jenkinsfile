@@ -7,11 +7,11 @@ podTemplate(label: 'docker-bitcoinsv', containers: [
     stage('Build Image') {
       container('docker') {
         def scmVars = checkout scm
-        sh "docker build -t santiment/bitcoinsv:${VERSION_MINOR} -t santiment/bitcoinsv:${VERSION} ."
+        def VERSION = "v0.1.1"
+        sh "docker build -t santiment/bitcoinsv:${VERSION} ."
 
         if (env.BRANCH_NAME == "master") {
           withDockerRegistry([ credentialsId: "dockerHubCreds", url: "" ]) {
-            sh "docker push santiment/bitcoinsv:${VERSION_MINOR}"
             sh "docker push santiment/bitcoinsv:${VERSION}"
           }
         }
